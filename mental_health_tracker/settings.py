@@ -28,8 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "http://thorbert-anson-mentalhealthtracker2.pbp.cs.ui.ac.id",
-    "https://thorbert-anson-mentalhealthtracker2.pbp.cs.ui.ac.id",
+    "thorbert-anson-mentalhealthtracker2.pbp.cs.ui.ac.id",
+    # "https://thorbert-anson-mentalhealthtracker2.pbp.cs.ui.ac.id",
 ]
 
 
