@@ -50,7 +50,7 @@ def logout_user(request):
 
 @login_required(login_url="main:login")
 def show_main(request: HttpRequest):
-    mood_entries = MoodEntry.objects.request(user=request.user)
+    mood_entries = MoodEntry.objects.filter(user=request.user)
 
     context = {
         "name": request.user.username,
