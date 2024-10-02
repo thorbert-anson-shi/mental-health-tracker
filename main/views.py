@@ -1,7 +1,11 @@
 import datetime
+
+from django.utils.html import strip_tags
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from .forms import MoodEntryForm
 from .models import MoodEntry
 from django.contrib import messages
@@ -34,6 +38,8 @@ def login_user(request):
             response = HttpResponseRedirect(reverse("main:show_main"))
             response.set_cookie("last_login", str(datetime.datetime.now()))
             return response
+        else:
+            messages.error(request, "Invalid username or password. Please try again.")
 
     else:
         form = AuthenticationForm(request)
@@ -50,14 +56,12 @@ def logout_user(request):
 
 @login_required(login_url="main:login")
 def show_main(request: HttpRequest):
-    mood_entries = MoodEntry.objects.filter(user=request.user)
 
     context = {
         "name": request.user.username,
         "npm": "2306221900",
         "name": "Thorbert Anson Shi",
         "class": "PBP E",
-        "mood_entries": mood_entries,
         "last_login": request.COOKIES["last_login"],
     }
 
@@ -75,6 +79,23 @@ def create_mood_entry(request: HttpRequest):
 
     context = {"form": form}
     return render(request, "create-mood-entry.html", context)
+
+
+@csrf_exempt
+@require_POST
+def add_mood_entry_ajax(request):
+    mood = strip_tags(request.POST.get("mood"))
+    feelings = strip_tags(request.POST.get("feelings"))
+    mood_intensity = request.POST.get("mood_intensity")
+    user = request.user
+
+    new_mood = MoodEntry(
+        mood=mood, feelings=feelings, mood_intensity=mood_intensity, user=user
+    )
+    new_mood.save()
+
+    return HttpResponse(b"CREATED", status=201)
+    ...
 
 
 def edit_mood(request, id):
@@ -110,7 +131,7 @@ def show_xml(request: HttpRequest):
 
 
 def show_json(request: HttpRequest):
-    data = MoodEntry.objects.all()
+    data = MoodEntry.objects.filter(user=request.user)
     return HttpResponse(
         serializers.serialize("json", data), content_type="application/json"
     )
