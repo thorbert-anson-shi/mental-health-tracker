@@ -4,7 +4,7 @@ from django.utils.html import strip_tags
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.views.decorators.http import require_POST
 from .forms import MoodEntryForm
 from .models import MoodEntry
@@ -15,6 +15,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 
+@csrf_protect
 def register(request):
     form = UserCreationForm()
 
@@ -28,6 +29,7 @@ def register(request):
     return render(request, "register.html", context)
 
 
+@csrf_protect
 def login_user(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
