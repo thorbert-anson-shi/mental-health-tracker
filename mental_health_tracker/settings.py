@@ -27,9 +27,17 @@ SECRET_KEY = "django-insecure-j=vn$ov-k5w-k7h^c7j2w_6_@v&jus4^v&w943buwo(1drugew
 PRODUCTION = os.getenv("PRODUCTION", False)
 DEBUG = not PRODUCTION
 
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SAMESITE = "None"
+
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    "10.0.2.2",
     "thorbert-anson-mentalhealthtracker.pbp.cs.ui.ac.id",
     # "https://thorbert-anson-mentalhealthtracker2.pbp.cs.ui.ac.id",
     "mental-health-tracker-production.up.railway.app",
@@ -46,6 +54,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # User created apps
+    "corsheaders",
+    "authentication",
     "main",
 ]
 
@@ -58,6 +68,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "mental_health_tracker.urls"
