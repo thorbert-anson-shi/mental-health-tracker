@@ -32,6 +32,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "thorbert-anson-mentalhealthtracker.pbp.cs.ui.ac.id",
     # "https://thorbert-anson-mentalhealthtracker2.pbp.cs.ui.ac.id",
+    "mental-health-tracker-production.up.railway.app",
 ]
 
 

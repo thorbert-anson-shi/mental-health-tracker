@@ -62,7 +62,9 @@ def show_main(request: HttpRequest):
         "npm": "2306221900",
         "name": "Thorbert Anson Shi",
         "class": "PBP E",
-        "last_login": request.COOKIES["last_login"],
+        "last_login": (
+            request.COOKIES["last_login"] if "last_login" in request.COOKIES else None
+        ),
     }
 
     return render(request, "main.html", context)
@@ -95,7 +97,6 @@ def add_mood_entry_ajax(request):
     new_mood.save()
 
     return HttpResponse(b"CREATED", status=201)
-    ...
 
 
 def edit_mood(request, id):
